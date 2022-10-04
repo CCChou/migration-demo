@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+  postgresql:
+    image: "registry.redhat.io/rhel8/postgresql-10:1-195"
+    environment:
+      POSTGRESQL_USER: sa
+      POSTGRESQL_PASSWORD: sa
+      POSTGRESQL_DATABASE: sampledb
