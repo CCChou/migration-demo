@@ -3,7 +3,6 @@ package tw.dennis.todolist;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,12 +22,12 @@ public class TodolistService {
     private TodolistRepository todolistRepository;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Todolist> todolistById(@PathVariable("id") Long id) {
+    public Todolist todolistById(@PathVariable("id") Long id) {
         Optional<Todolist> optTodolist = todolistRepository.findById(id);
         if (optTodolist.isPresent()) {
-            return new ResponseEntity<>(optTodolist.get(), HttpStatus.OK);
+            return optTodolist.get();
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return null;
     }
 
     @PostMapping(consumes = "application/json")
@@ -54,7 +53,7 @@ public class TodolistService {
     public void deleteTodolist(@PathVariable("id") Long id) {
         try {
             todolistRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
